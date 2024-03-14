@@ -1,5 +1,5 @@
 {
-  "isFirstLaunch": false,
+  "isFirstLaunch": true,
   "server_url" : "http://127.0.0.1:80/",
   "MESSAGE_ENCRYPTION_KEY" : "VXEg1QN2EqCGIT9iMSxopYkRA1asQyTNRhdebcJDbWg="
 }

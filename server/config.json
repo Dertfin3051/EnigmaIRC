@@ -1,4 +1,7 @@
 {
-  "app_version": "0.1a",
+  "app_version": "0.2a",
+  "server_public_ip" : "127.0.0.1",
+  "port" : 80,
+  "disable_request_logs" : true,
   "session_count" : 2
 }

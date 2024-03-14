@@ -5,12 +5,12 @@ import logging
 with open("config.json", "r", encoding = 'utf-8') as config_file:  # Открываем файл конфига
     config = json.loads(config_file.read())  # Читаем и парсим конфиг
 
-app = Flask("app")  # Создаём приложение
+app = Flask("EnigmaIRC Server")  # Создаём приложение
 
 # Отключение авто-логов
-app.logger.disabled = True
+app.logger.disabled = config["disable_request_logs"]
 log = logging.getLogger("werkzeug")
-log.disabled = True
+log.disabled = config["disable_request_logs"]
 
 session_status = []    # Важная переменная. Хранит актуальное кол-во отправленных сообщений. Если у клиента сообщений меньше, чем на сервере, то срабатывает триггер на получение нового сообщения
 for i in range(config["session_count"]):
@@ -44,7 +44,7 @@ def newMessage():
     filename = f"sessions/{str(session)}.json"  # Получаем путь к файлу по номеру сессии
     writeMessage(filename, user, msg)  # Сохраняем сообщение
     print(f"{user} отправил сообщение, как пользователь {session}.")  # Лог
-    return "Message was sent"
+    return "Сообщение отправлено"
 
 
 """
@@ -81,5 +81,6 @@ def readMessage(file):
         message = json.loads(msg_file.read())
     return message
 
+print("Сервер запущен с {}:{}".format(config["server_public_ip"], config["port"]))
+app.run(debug = False, host = config["server_public_ip"],port = config["port"])
 
-app.run(debug = False, port = 80)
