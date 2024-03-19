@@ -3,8 +3,10 @@ import time
 from utils.config import *
 from utils import connection
 import utils.setup as setup
+from utils.serverUserDataSync import *
 
 config = getConfig()
+server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
 
@@ -21,11 +23,12 @@ colorama.just_fix_windows_console()
 from cryptography.fernet import Fernet
 crypt = Fernet(bytes(config["MESSAGE_ENCRYPTION_KEY"], "utf-8"))    # Инициализация класса шифрования
 
-local_sessions = requests.get(f"{config["server_url"]}sessions").json()    # Получаем информацию о всех сессиях
+local_sessions = requests.get(f"{server_url}sessions").json()    # Получаем информацию о всех сессиях
 # Получение кол-ва сессий
 server_config = getServerConfig()
-max_sessions = server_config["session_count"] - 1
-session = int(input(f"Номер сессии(от 0 до {max_sessions}): "))    # Номер сессии
+
+session = getSession(server_config)    # Номер сессии
+
 
 actual_sessions_client = requests.Session()
 # Избежание ошибки о максимальном кол-ве попыток
@@ -34,12 +37,12 @@ adapter = HTTPAdapter(max_retries=retry)
 actual_sessions_client.mount('http://', adapter)
 actual_sessions_client.mount('https://', adapter)
 while True:
-    actual_sessions = actual_sessions_client.get(f"{config["server_url"]}sessions").json()    # Получаем информацию об актуальных сессиях
+    actual_sessions = actual_sessions_client.get(f"{server_url}sessions").json()    # Получаем информацию об актуальных сессиях
     i = 0
     for i in range(len(actual_sessions)):    # Пробегаем по актуальным сессиям
         if actual_sessions[i] != local_sessions[i]:  # Несостыковка сессий = отправлено новое сообщение
             # Получаем и выводим новое сообщение
-            msg_data = requests.get(f"{config["server_url"]}message/get", params = {"session": i}).json()
+            msg_data = requests.get(f"{server_url}message/get", params = {"session": i}).json()
             msg = msg_data["msg"]
             msg = bytes.decode(crypt.decrypt(msg))    # Расшифровываем
             if i != session:    # Сообщение отправил другой пользователь

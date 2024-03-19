@@ -5,6 +5,7 @@ import utils.setup as setup
 debug = False
 
 config = getConfig()
+server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
 
@@ -26,7 +27,7 @@ def send(msg: str, session, name):    # Функция отправки сооб
         "user": name,
         "msg": msg
     }    # Записываем параетры
-    req = requests.get(f"{config["server_url"]}message/new", params = params)    # Посылаем запрос
+    req = requests.get(f"{server_url}message/new", params = params)    # Посылаем запрос
 
     if debug: print(f"Отправлено\nЗашафрованное сообщение: {msg}\n")    # Отправка зашифрованного сообщения отправителю
     return req    # И на всякий статус. Хз зачем, пусть будет, так типо правильно
