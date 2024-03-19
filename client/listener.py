@@ -29,7 +29,6 @@ server_config = getServerConfig()
 
 session = getSession(server_config)    # Номер сессии
 
-
 actual_sessions_client = requests.Session()
 # Избежание ошибки о максимальном кол-ве попыток
 retry = Retry(connect=999999999999, backoff_factor=0.5)

@@ -1,6 +1,7 @@
 from utils.config import *
 from utils import connection
 import utils.setup as setup
+from utils.serverUserDataSync import *
 
 debug = False
 
@@ -34,11 +35,10 @@ def send(msg: str, session, name):    # Функция отправки сооб
 
 # Получение кол-ва сессий
 server_config = getServerConfig()
-max_sessions = server_config["session_count"] - 1
 
 # Получение данных
 name = input("Имя пользователя: ")    # Имя пользователя
-session = int(input(f"Номер сессии(от 0 до {max_sessions}): "))    # Номер сессии
+session = getSession(server_config)    # Номер сессии
 
 # Ход работы
 print("Авторизация...")
