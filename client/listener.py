@@ -30,6 +30,8 @@ local_sessions = requests.get(f"{server_url}sessions").json()    # Получа�
 # Получение кол-ва сессий
 server_config = getServerConfig()
 
+checkForVersion()    # Проверка на актуальность версии
+
 session = getSession(server_config)    # Номер сессии
 
 actual_sessions_client = requests.Session()

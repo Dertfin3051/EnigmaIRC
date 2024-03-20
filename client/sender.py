@@ -39,6 +39,8 @@ def send(msg: str, session, name):    # Функция отправки сооб
 # Получение кол-ва сессий
 server_config = getServerConfig()
 
+checkForVersion()    # Проверка на актуальность версии
+
 # Получение данных
 name = input("Имя пользователя: ")    # Имя пользователя
 session = getSession(server_config)    # Номер сессии
