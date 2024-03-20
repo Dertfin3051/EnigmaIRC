@@ -1,3 +1,5 @@
+import os
+
 from utils.config import *
 from utils import connection
 import utils.setup as setup
@@ -19,7 +21,8 @@ import colorama
 colorama.init()
 colorama.just_fix_windows_console()
 from cryptography.fernet import Fernet
-crypt = Fernet(bytes(config["MESSAGE_ENCRYPTION_KEY"], "utf-8"))    # Инициализация класса шифрования
+
+crypt = getEncryption()    # Получение класса шифрования
 
 def send(msg: str, session, name):    # Функция отправки сообщения
     msg = crypt.encrypt(bytes(msg, "utf-8"))    # Шифруем сообщение

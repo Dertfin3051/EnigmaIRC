@@ -1,5 +1,7 @@
 import time
 
+import cryptography.fernet
+
 from utils.config import *
 from utils import connection
 import utils.setup as setup
@@ -20,8 +22,9 @@ from urllib3.util.retry import Retry
 import colorama
 colorama.init()
 colorama.just_fix_windows_console()
+
 from cryptography.fernet import Fernet
-crypt = Fernet(bytes(config["MESSAGE_ENCRYPTION_KEY"], "utf-8"))    # Инициализация класса шифрования
+crypt = getEncryption()    # Получение класса шифрования
 
 local_sessions = requests.get(f"{server_url}sessions").json()    # Получаем информацию о всех сессиях
 # Получение кол-ва сессий
@@ -43,11 +46,15 @@ while True:
             # Получаем и выводим новое сообщение
             msg_data = requests.get(f"{server_url}message/get", params = {"session": i}).json()
             msg = msg_data["msg"]
-            msg = bytes.decode(crypt.decrypt(msg))    # Расшифровываем
-            if i != session:    # Сообщение отправил другой пользователь
-                print(colorama.Fore.LIGHTBLUE_EX + f"{msg_data["user"]} => {msg}" + colorama.Fore.RESET)
-            else:    # Сообщение отправил этот пользователь
-                print(colorama.Fore.WHITE + f"Вы => {msg}" + colorama.Fore.RESET)
+            try:
+                msg = bytes.decode(crypt.decrypt(msg))    # Расшифровываем
+                if i != session:    # Сообщение отправил другой пользователь
+                    print(colorama.Fore.LIGHTBLUE_EX + f"{msg_data["user"]} => {msg}" + colorama.Fore.RESET)
+                else:    # Сообщение отправил этот пользователь
+                    print(colorama.Fore.WHITE + f"Вы => {msg}" + colorama.Fore.RESET)
+            except cryptography.fernet.InvalidToken:
+                print(colorama.Fore.RED + "Не удалось расшифровать входящее сообщение. Возможно доступ к чату получен извне! ")
+
 
             # Обновляем локальные сессии
             local_sessions[i] += 1
