@@ -47,5 +47,5 @@ def checkForVersion():
     local_config = getConfig()
     server_config = getServerConfig()
     if not (local_config["app_version"] == server_config["app_version"]):
-        print(f"{Fore.YELLOW}Версия клиента {Fore.RED}({local_config["app_version"]}){Fore.YELLOW} не совпадает с версией сервера {Fore.GREEN}({server_config["app_version"]})")
+        print(f"{Fore.YELLOW}Версия клиента {Fore.RED}({local_config['app_version']}){Fore.YELLOW} не совпадает с версией сервера {Fore.GREEN}({server_config['app_version']})")
         print(f"{Fore.YELLOW}Это может привести к ошибкам.\n" + Fore.RESET)

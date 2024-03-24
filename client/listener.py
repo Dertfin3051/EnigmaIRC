@@ -62,7 +62,7 @@ while True:
             try:
                 msg = bytes.decode(crypt.decrypt(msg))    # Расшифровываем
                 if i != session:    # Сообщение отправил другой пользователь
-                    print(colorama.Fore.LIGHTBLUE_EX + f"{msg_data["user"]} => {msg}" + colorama.Fore.RESET)
+                    print(colorama.Fore.LIGHTBLUE_EX + f"{msg_data['user']} => {msg}" + colorama.Fore.RESET)
                 else:    # Сообщение отправил этот пользователь
                     print(colorama.Fore.WHITE + f"Вы => {msg}" + colorama.Fore.RESET)
             except cryptography.fernet.InvalidToken:
