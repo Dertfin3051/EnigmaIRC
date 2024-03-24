@@ -16,3 +16,11 @@ def getSession(server_config) -> int:
         except ValueError:  # Пользователь ввёл не число
             print(Fore.RED + "Вы ввели некорректный номер сессии!\n" + Fore.RESET)
 
+def tryServerConnection(server_url: str):
+    try:
+        import requests
+        requests.get(server_url)
+    except requests.exceptions.ConnectionError:
+        print(Fore.RED + "Не удаётся подключиться к серверу. Возможно, вы забыли указать данный параметр!")
+        input()
+        exit(0)

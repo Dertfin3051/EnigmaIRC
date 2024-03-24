@@ -21,6 +21,7 @@ config = getConfig()
 server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
+tryServerConnection(server_url)    # Программа не запустится, если сервер недоступен
 
 if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
     setup.setup()

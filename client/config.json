@@ -1,6 +1,6 @@
 {
-    "isFirstLaunch": true,
+    "isFirstLaunch": false,
     "server_ip": "127.0.0.1:80",
     "MESSAGE_ENCRYPTION_KEY": "VXEg1QN2EqCGIT9iMSxopYkRA1asQyTNRhdebcJDbWg=",
-    "app_version": "0.4.2a"
+    "app_version": "1.0beta"
 }

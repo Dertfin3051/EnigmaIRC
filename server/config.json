@@ -1,5 +1,5 @@
 {
-  "app_version": "0.4.2a",
+  "app_version": "1.0beta",
   "server_public_ip" : "127.0.0.1",
   "port" : 80,
   "disable_request_logs" : true,
