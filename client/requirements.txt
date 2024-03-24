@@ -2,3 +2,4 @@ requests
 colorama
 cryptography
 urllib3
+psutils

@@ -5,6 +5,16 @@ from utils import connection
 import utils.setup as setup
 from utils.serverUserDataSync import *
 
+try:
+
+    import win32api
+
+    import platform
+    if platform.system() == "Windows":
+        win32api.SetConsoleTitle("Sender - EnigmaIRC")
+except:
+    pass
+
 debug = False
 
 config = getConfig()

@@ -6,6 +6,15 @@ from utils.config import *
 from utils import connection
 import utils.setup as setup
 from utils.serverUserDataSync import *
+try:
+
+    import win32api
+
+    import platform
+    if platform.system() == "Windows":
+        win32api.SetConsoleTitle("Listener - EnigmaIRC")
+except:
+    pass
 
 config = getConfig()
 server_url = "http://" + config["server_ip"] + "/"
@@ -20,6 +29,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import colorama
+
 colorama.init()
 colorama.just_fix_windows_console()
 
