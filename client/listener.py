@@ -32,7 +32,10 @@ from urllib3.util.retry import Retry
 import colorama
 
 colorama.init()
-colorama.just_fix_windows_console()
+try:
+    colorama.just_fix_windows_console()
+except AttributeError:
+    pass
 
 from cryptography.fernet import Fernet
 crypt = getEncryption()    # Получение класса шифрования
