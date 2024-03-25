@@ -63,7 +63,7 @@ while True:
             msg_data = requests.get(f"{server_url}message/get", params = {"session": i}).json()
             msg = msg_data["msg"]
             try:
-                msg = bytes.decode(crypt.decrypt(msg))    # Расшифровываем
+                msg = bytes.decode(crypt.decrypt(bytes(msg, 'utf-8')))    # Расшифровываем
                 if i != session:    # Сообщение отправил другой пользователь
                     print(colorama.Fore.LIGHTBLUE_EX + f"{msg_data['user']} => {msg}" + colorama.Fore.RESET)
                 else:    # Сообщение отправил этот пользователь
