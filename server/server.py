@@ -6,6 +6,14 @@ with open("config.json", "r", encoding = 'utf-8') as config_file:  # Откры�
     config = json.loads(config_file.read())  # Читаем и парсим конфиг
 
 app = Flask("EnigmaIRC Server")  # Создаём приложение
+debug = False
+
+
+def checkNotNull(*args):    # Проверка любого кол-ва переменных на существование (aka NotNull)
+    for var in args:    # Перебор аргументов
+        if var is None:    # Если аргумент пустой - вернуть False
+            return False
+    return True    # Если все итерации прошли успешно, None(null) значений не было. Вернуть True
 
 # Отключение авто-логов
 app.logger.disabled = config["disable_request_logs"]
@@ -39,6 +47,9 @@ def newMessage():
     user = request.args.get("user")
     msg = request.args.get("msg")
 
+    if not checkNotNull(session, user, msg):    # Если хотябы один элемент не указан, отмена сообщения
+        return "Ошибка: параметры сообщения не указаны"
+
     session_status[int(session)] += 1    # Обновление сессии
 
     filename = f"sessions/{str(session)}.json"  # Получаем путь к файлу по номеру сессии
@@ -58,6 +69,8 @@ session = номер сессии
 @app.route("/message/get")  # Получение сообщения по номеру сессии
 def getMessage():
     session = request.args.get("session")
+    if not checkNotNull(session):
+        return "Ошибка: не указан номер сессии"
     filename = f"sessions/{str(session)}.json"
     return readMessage(filename)
 
@@ -67,20 +80,20 @@ def getSessions():
     return session_status
 
 
-def writeMessage(file, user, msg):  # Сохранение сообщения
+async def writeMessage(file, user, msg):  # Сохранение сообщения
     message_data = {
         "user": user,
         "msg": msg
     }  # Формирование класса
     with open(file, "w", encoding = "utf-8") as msg_file:
-        msg_file.write(json.dumps(message_data))  # Запись файла с конвертацией в JSON
+        await msg_file.write(json.dumps(message_data))  # Запись файла с конвертацией в JSON
 
 
-def readMessage(file):
+async def readMessage(file):
     with open(file, "r", encoding = "utf-8") as msg_file:
-        message = json.loads(msg_file.read())
+        message = await json.loads(msg_file.read())
     return message
 
 print("Сервер запущен с {}:{}".format(config["server_public_ip"], config["port"]))
-app.run(debug = False, host = config["server_public_ip"],port = config["port"])
+app.run(debug = debug, host = config["server_public_ip"],port = config["port"])
 

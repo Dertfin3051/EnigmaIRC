@@ -32,7 +32,7 @@ import colorama
 colorama.init()
 try:
     colorama.just_fix_windows_console()
-except AttributeError:
+except Exception:
     pass
 from cryptography.fernet import Fernet
 
