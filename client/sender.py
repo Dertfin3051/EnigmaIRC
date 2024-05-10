@@ -38,7 +38,11 @@ from cryptography.fernet import Fernet
 
 crypt = getEncryption()    # Получение класса шифрования
 
+
 def send(msg: str, session, name):    # Функция отправки сообщения
+    if msg == "":
+        print("Вы не можете отправлять пустые сообщения!")
+        return
     msg = crypt.encrypt(bytes(msg, "utf-8"))    # Шифруем сообщение
     params = {
         "session": session,
@@ -49,6 +53,7 @@ def send(msg: str, session, name):    # Функция отправки сооб
 
     if debug: print(f"Отправлено\nЗашафрованное сообщение: {msg}\n")    # Отправка зашифрованного сообщения отправителю
     return req    # И на всякий статус. Хз зачем, пусть будет, так типо правильно
+
 
 # Получение кол-ва сессий
 server_config = getServerConfig()
