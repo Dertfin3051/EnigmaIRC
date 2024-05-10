@@ -25,10 +25,10 @@ def check_not_null(*args):  # Проверка любого кол-ва пере
     return True  # Если все итерации прошли успешно, None(null) значений не было. Вернуть True
 
 
-async def write_message(file, user, msg):  # Сохранение сообщения
+async def write_message(file, username, message):  # Сохранение сообщения
     message_data = {
-        "user": user,
-        "msg": msg
+        "user": username,
+        "msg": message
     }  # Формирование класса
     with open(file, "w", encoding="utf-8") as msg_file:
         await msg_file.write(json.dumps(message_data))  # Запись файла с конвертацией в JSON

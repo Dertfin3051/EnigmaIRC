@@ -5,7 +5,7 @@ import cryptography.fernet
 from utils.config import *
 from utils import connection
 import utils.setup as setup
-from utils.serverUserDataSync import *
+from utils.server_user_data_sync import *
 try:
 
     import win32api
@@ -20,7 +20,7 @@ config = getConfig()
 server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
-tryServerConnection(server_url)    # Программа не запустится, если сервер недоступен
+try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
 
 if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
     setup.setup()
@@ -44,9 +44,9 @@ local_sessions = requests.get(f"{server_url}sessions").json()    # Получа�
 # Получение кол-ва сессий
 server_config = getServerConfig()
 
-checkForVersion()    # Проверка на актуальность версии
+check_for_version()    # Проверка на актуальность версии
 
-session = getSession(server_config)    # Номер сессии
+session = get_session(server_config)    # Номер сессии
 
 actual_sessions_client = requests.Session()
 # Избежание ошибки о максимальном кол-ве попыток

@@ -3,7 +3,7 @@ import os
 from utils.config import *
 from utils import connection
 import utils.setup as setup
-from utils.serverUserDataSync import *
+from utils.server_user_data_sync import *
 
 try:
 
@@ -21,7 +21,7 @@ config = getConfig()
 server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
-tryServerConnection(server_url)    # Программа не запустится, если сервер недоступен
+try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
 
 if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
     setup.setup()
@@ -58,11 +58,11 @@ def send(msg: str, session, name):    # Функция отправки сооб
 # Получение кол-ва сессий
 server_config = getServerConfig()
 
-checkForVersion()    # Проверка на актуальность версии
+check_for_version()    # Проверка на актуальность версии
 
 # Получение данных
 name = input("Имя пользователя: ")    # Имя пользователя
-session = getSession(server_config)    # Номер сессии
+session = get_session(server_config)    # Номер сессии
 
 # Ход работы
 print("Авторизация...")

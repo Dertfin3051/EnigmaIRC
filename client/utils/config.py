@@ -42,7 +42,7 @@ def getEncryption():
         exit(0)
     return crypt
 
-def checkForVersion():
+def check_for_version():
     from colorama import Fore
     local_config = getConfig()
     server_config = getServerConfig()

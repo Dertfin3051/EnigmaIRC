@@ -1,7 +1,7 @@
 from colorama import Fore
 
 
-def getSession(server_config) -> int:
+def get_session(server_config) -> int:
     """
     Получение номера сессии от пользователя с учётом проверок и исключений
     """
@@ -16,7 +16,7 @@ def getSession(server_config) -> int:
         except ValueError:  # Пользователь ввёл не число
             print(Fore.RED + "Вы ввели некорректный номер сессии!\n" + Fore.RESET)
 
-def tryServerConnection(server_url: str):
+def try_server_connection(server_url: str):
     try:
         import requests
         requests.get(server_url)
