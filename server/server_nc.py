@@ -64,3 +64,5 @@ def readMessage(file):
 
 print("Server was started on {}:{}".format(config["server_public_ip"], config["port"]))
 app.run(debug = False, host = config["server_public_ip"], port = config["port"])
+
+# 1.1 должна была выйти 15 мая, но взамен на помощь, я получил наказание, спасибо, +79858861304
