@@ -1,23 +1,19 @@
 from flask import Flask, request
-import json
 import logging
 
-from handlers import check_not_null, write_message, read_message
+from handlers import check_not_null, write_message, read_message, get_config, generate_empty_sessions
 
 app = Flask("EnigmaIRC Server")  # Создаём приложение
 DEBUG = False
 
-with open("config.json", "r", encoding='utf-8') as config_file:  # Открываем файл конфига
-    config = json.loads(config_file.read())  # Читаем и парсим конфиг
+config = get_config()
 
 # Отключение авто-логов
 app.logger.disabled = config["disable_request_logs"]
 log = logging.getLogger("werkzeug")
 log.disabled = config["disable_request_logs"]
 
-session_status = []  # Важная переменная. Хранит актуальное кол-во отправленных сообщений. Если у клиента сообщений меньше, чем на сервере, то срабатывает триггер на получение нового сообщения
-for i in range(config["session_count"]):
-    session_status.append(0)  # Заполнение нулями
+session_status = generate_empty_sessions()  # Важная переменная. Хранит актуальное кол-во отправленных сообщений. Если у клиента сообщений меньше, чем на сервере, то срабатывает триггер на получение нового сообщения
 
 
 @app.route("/")  # Переход на основную страницу возвращает конфиг
