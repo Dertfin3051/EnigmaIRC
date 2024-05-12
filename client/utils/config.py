@@ -1,6 +1,9 @@
 import json
 
-def get_config(path="config.json"):
+import cryptography.fernet
+
+
+def get_config(path="config.json") -> dict:
     """
     Получение конфига.
     """
@@ -9,7 +12,7 @@ def get_config(path="config.json"):
     return config
 
 
-def save_config(data, path="config.json"):
+def save_config(data, path="config.json") -> None:
     """
         Сохранение конфига.
     """
@@ -20,13 +23,12 @@ def get_server_config():
     """
     Получает конфигурацию сервера
     """
-    local_config = get_config()    # Получение локального конфига
-    server_url = "http://" + local_config["server_ip"] + "/"
+    server_url = get_server_url()
     import requests
     r = requests.get(server_url)    # Обращение к серверу
     return json.loads(r.text)    # Возвращаем конфиг
 
-def get_encryption():
+def get_encryption() -> cryptography.fernet.Fernet:
     """
     Получает ключ шифрования из конфига и создаёт класс шифрования с учётом возможных ошибок
     """
@@ -49,3 +51,8 @@ def check_for_version():
     if not (local_config["app_version"] == server_config["app_version"]):
         print(f"{Fore.YELLOW}Версия клиента {Fore.RED}({local_config['app_version']}){Fore.YELLOW} не совпадает с версией сервера {Fore.GREEN}({server_config['app_version']})")
         print(f"{Fore.YELLOW}Это может привести к ошибкам.\n" + Fore.RESET)
+
+def get_server_url() -> str:
+    config = get_config()
+    server_url = "http://" + config["server_ip"] + "/"
+    return server_url

@@ -6,18 +6,12 @@ from utils.config import *
 from utils import connection
 import utils.setup as setup
 from utils.server_user_data_sync import *
-try:
+from utils.handlers import *
 
-    import win32api
-
-    import platform
-    if platform.system() == "Windows":
-        win32api.SetConsoleTitle("Listener - EnigmaIRC")
-except:
-    pass
+set_windows_console_title("Listener - EnigmaIRC")    # Установка заголовка окна (только для Windows)
 
 config = get_config()
-server_url = "http://" + config["server_ip"] + "/"
+server_url = get_server_url()
 
 connection.connect()    # Программа не запустится до подключения к сети
 connection.try_server_connection(server_url)    # Программа не запустится, если сервер недоступен

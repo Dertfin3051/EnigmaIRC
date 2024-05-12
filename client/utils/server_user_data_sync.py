@@ -16,3 +16,5 @@ def get_session(server_config) -> int:
         except ValueError:  # Пользователь ввёл не число
             print(Fore.RED + "Вы ввели некорректный номер сессии!\n" + Fore.RESET)
 
+def get_actual_sessions():
+    pass

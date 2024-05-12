@@ -2,21 +2,14 @@ from utils.config import *
 from utils import connection
 import utils.setup as setup
 from utils.server_user_data_sync import *
-
-try:
-
-    import win32api
-
-    import platform
-    if platform.system() == "Windows":
-        win32api.SetConsoleTitle("Sender - EnigmaIRC")
-except:
-    pass
+from utils.handlers import *
 
 debug = False
 
+set_windows_console_title("Sender - EnigmaIRC")    # Установка заголовка окна (только для Windows)
+
 config = get_config()
-server_url = "http://" + config["server_ip"] + "/"
+server_url = get_server_url()
 
 connection.connect()    # Программа не запустится до подключения к сети
 connection.try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
@@ -30,22 +23,22 @@ import colorama
 colorama.init()
 try:
     colorama.just_fix_windows_console()
-except Exception:
+except:
     pass
 from cryptography.fernet import Fernet
 
 crypt = get_encryption()    # Получение класса шифрования
 
 
-def send(msg: str, session, name):    # Функция отправки сообщения
-    if msg == "":
+def send(message: str, session, name):    # Функция отправки сообщения
+    if message == "":
         print("Вы не можете отправлять пустые сообщения!")
         return
-    msg = crypt.encrypt(bytes(msg, "utf-8"))    # Шифруем сообщение
+    encrypted_message = crypt.encrypt(bytes(message, "utf-8"))    # Шифруем сообщение
     params = {
         "session": session,
         "user": name,
-        "msg": msg
+        "msg": encrypted_message
     }    # Записываем параетры
     req = requests.get(f"{server_url}message/new", params = params)    # Посылаем запрос
 
