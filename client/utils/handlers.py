@@ -18,6 +18,8 @@ def send_message(message: str, session, name, **kwargs):    # Функция о�
     if message == "":
         print("Вы не можете отправлять пустые сообщения!")
         return
+    elif message == "Авторизовался":
+        message = "Авторизовался "    # Защита от поддельных сообщений об авторизации
     encrypted_message = crypt.encrypt(bytes(message, "utf-8"))    # Шифруем сообщение
     params = {
         "session": session,

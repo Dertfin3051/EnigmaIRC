@@ -5,6 +5,7 @@ from utils.server_user_data_sync import *
 from utils.handlers import *
 
 debug = False
+is_source_code = True    # False при билде приложения в бинарник
 
 set_windows_console_title("Sender - EnigmaIRC")    # Установка заголовка окна (только для Windows)
 
@@ -14,29 +15,25 @@ server_url = get_server_url()
 connection.connect()    # Программа не запустится до подключения к сети
 connection.try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
 
-if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
+if config["isFirstLaunch"] and is_source_code:    # Установка библиотек при первом запуске
     setup.setup()
 
 # Импорты
-import requests
 import colorama
 colorama.init()
 try:
     colorama.just_fix_windows_console()
 except:
     pass
-from cryptography.fernet import Fernet
 
 crypt = get_encryption()    # Получение класса шифрования
 
-
-# Получение кол-ва сессий
-server_config = get_server_config()
+server_config = get_server_config()    # Получение конфига сервера
 
 check_for_version()    # Проверка на актуальность версии
 
 # Получение данных
-name = input("Имя пользователя: ")    # Имя пользователя
+name = get_username()    # Имя пользователя
 session = get_session(server_config)    # Номер сессии
 
 # Ход работы
