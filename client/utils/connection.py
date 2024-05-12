@@ -1,6 +1,7 @@
 import time
 
 import requests
+from colorama import Fore
 
 CONNECTION_TRYING_DELAY = 2
 
@@ -14,3 +15,12 @@ def connect():
             print("Не удаётся подключиться к сети...")
             time.sleep(CONNECTION_TRYING_DELAY)
             print("Переподключение...", end = "\n\n")
+
+def try_server_connection(server_url: str):
+    import requests
+    try:
+        requests.get(server_url)
+    except requests.exceptions.ConnectionError:
+        print(Fore.RED + "Не удаётся подключиться к серверу. Возможно, вы забыли указать данный параметр!")
+        input()
+        exit(0)

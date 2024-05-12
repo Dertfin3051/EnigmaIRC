@@ -16,11 +16,11 @@ try:
 except:
     pass
 
-config = getConfig()
+config = get_config()
 server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
-try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
+connection.try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
 
 if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
     setup.setup()
@@ -38,11 +38,11 @@ except AttributeError:
     pass
 
 from cryptography.fernet import Fernet
-crypt = getEncryption()    # Получение класса шифрования
+crypt = get_encryption()    # Получение класса шифрования
 
 local_sessions = requests.get(f"{server_url}sessions").json()    # Получаем информацию о всех сессиях
 # Получение кол-ва сессий
-server_config = getServerConfig()
+server_config = get_server_config()
 
 check_for_version()    # Проверка на актуальность версии
 

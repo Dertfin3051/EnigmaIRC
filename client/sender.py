@@ -1,5 +1,3 @@
-import os
-
 from utils.config import *
 from utils import connection
 import utils.setup as setup
@@ -17,11 +15,11 @@ except:
 
 debug = False
 
-config = getConfig()
+config = get_config()
 server_url = "http://" + config["server_ip"] + "/"
 
 connection.connect()    # Программа не запустится до подключения к сети
-try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
+connection.try_server_connection(server_url)    # Программа не запустится, если сервер недоступен
 
 if config["isFirstLaunch"]:    # Установка библиотек при первом запуске
     setup.setup()
@@ -36,7 +34,7 @@ except Exception:
     pass
 from cryptography.fernet import Fernet
 
-crypt = getEncryption()    # Получение класса шифрования
+crypt = get_encryption()    # Получение класса шифрования
 
 
 def send(msg: str, session, name):    # Функция отправки сообщения
@@ -56,7 +54,7 @@ def send(msg: str, session, name):    # Функция отправки сооб
 
 
 # Получение кол-ва сессий
-server_config = getServerConfig()
+server_config = get_server_config()
 
 check_for_version()    # Проверка на актуальность версии
 

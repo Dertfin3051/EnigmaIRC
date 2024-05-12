@@ -1,6 +1,6 @@
 import json
 
-def getConfig(path="config.json"):
+def get_config(path="config.json"):
     """
     Получение конфига.
     """
@@ -9,30 +9,30 @@ def getConfig(path="config.json"):
     return config
 
 
-def saveConfig(data, path="config.json"):
+def save_config(data, path="config.json"):
     """
         Сохранение конфига.
     """
     with open("config.json", "w", encoding = "utf-8") as config_file:
         config_file.write(json.dumps(data, indent = 4))
 
-def getServerConfig():
+def get_server_config():
     """
     Получает конфигурацию сервера
     """
-    local_config = getConfig()    # Получение локального конфига
+    local_config = get_config()    # Получение локального конфига
     server_url = "http://" + local_config["server_ip"] + "/"
     import requests
     r = requests.get(server_url)    # Обращение к серверу
     return json.loads(r.text)    # Возвращаем конфиг
 
-def getEncryption():
+def get_encryption():
     """
     Получает ключ шифрования из конфига и создаёт класс шифрования с учётом возможных ошибок
     """
     from cryptography.fernet import Fernet
     from colorama import Fore
-    config = getConfig()
+    config = get_config()
     try:
         crypt = Fernet(bytes(config["MESSAGE_ENCRYPTION_KEY"], "utf-8"))  # Инициализация класса шифрования
     except ValueError:
@@ -44,8 +44,8 @@ def getEncryption():
 
 def check_for_version():
     from colorama import Fore
-    local_config = getConfig()
-    server_config = getServerConfig()
+    local_config = get_config()
+    server_config = get_server_config()
     if not (local_config["app_version"] == server_config["app_version"]):
         print(f"{Fore.YELLOW}Версия клиента {Fore.RED}({local_config['app_version']}){Fore.YELLOW} не совпадает с версией сервера {Fore.GREEN}({server_config['app_version']})")
         print(f"{Fore.YELLOW}Это может привести к ошибкам.\n" + Fore.RESET)
