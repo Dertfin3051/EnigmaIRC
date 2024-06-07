@@ -1,5 +1,7 @@
+import cryptography.fernet
 import requests
 from config import *
+import colorama
 
 def set_windows_console_title(title: str):
     try:
@@ -32,3 +34,26 @@ def send_message(message: str, session, name, **kwargs):    # Функция о�
         debug = kwargs["debug"]
         if debug: print(f"Отправлено\nЗашафрованное сообщение: {encrypted_message}\n")    # Отправка зашифрованного сообщения отправителю
     return req    # И на всякий статус. Хз зачем, пусть будет, так типо правильно
+
+
+def print_encrypted_message(user_session: int, sender_session: int, sender_name: str, message_context: str) -> None:
+    """
+    :param user_session: Сессия пользователя, у которого запущен listener
+    :param sender_session: Сессия пользователя, который отправил сообщение
+    :return: None
+    """
+    if sender_session != user_session:  # Сообщение отправил другой пользователь
+        print(colorama.Fore.LIGHTBLUE_EX + f"{sender_name} => {message_context}" + colorama.Fore.RESET)
+    else:  # Сообщение отправил этот пользователь
+        print(colorama.Fore.WHITE + f"Вы => {message_context}" + colorama.Fore.RESET)
+    # TODO: Добавить @ping пользователя
+
+
+def handle_new_message(crypt: cryptography.fernet.Fernet, user_session: int, sender_session: int):
+    msg_data = requests.get(f"{get_server_url()}message/get", params={"session": sender_session}).json()
+    msg = msg_data["msg"]
+    try:
+        msg = bytes.decode(crypt.decrypt(bytes(msg, 'utf-8')))  # Расшифровываем
+        print_encrypted_message(user_session, sender_session, msg_data['user'], msg)
+    except cryptography.fernet.InvalidToken:
+        print(colorama.Fore.RED + "Не удалось расшифровать входящее сообщение. Возможно доступ к чату получен извне! ")
