@@ -40,6 +40,7 @@ server_config = get_server_config()
 
 check_for_version()    # Проверка на актуальность версии
 
+username = get_username()    # Имя пользователя
 session = get_session(server_config)    # Номер сессии
 
 actual_sessions_client = requests.Session()
@@ -54,7 +55,7 @@ while True:
     i = 0
     for i in range(len(actual_sessions)):    # Пробегаем по актуальным сессиям
         if actual_sessions[i] != local_sessions[i]:  # Несостыковка сессий = отправлено новое сообщение
-            handle_new_message(crypt, session, i)
+            handle_new_message(crypt, session, i, username)
             # Обновляем локальные сессии
             local_sessions[i] += 1
             time.sleep(1)  # Задержка

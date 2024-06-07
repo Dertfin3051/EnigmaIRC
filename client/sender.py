@@ -33,12 +33,12 @@ server_config = get_server_config()    # Получение конфига се�
 check_for_version()    # Проверка на актуальность версии
 
 # Получение данных
-name = get_username()    # Имя пользователя
+username = get_username()    # Имя пользователя
 session = get_session(server_config)    # Номер сессии
 
 # Ход работы
 print("Авторизация...")
-send_message("Авторизовался", session, name, debug=debug)
+send_message("Авторизовался", session, username, debug=debug)
 while True:
     msg = input(">>> ")
-    send_message(msg, session, name, debug=debug)
+    send_message(msg, session, username, debug=debug)
