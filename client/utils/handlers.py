@@ -48,7 +48,7 @@ def print_encrypted_message(user_session: int, sender_session: int, user_name: s
         msg_color = colorama.Fore.LIGHTYELLOW_EX
 
     if sender_session != user_session:  # Сообщение отправил другой пользователь
-        print(colorama.Fore.LIGHTBLUE_EX + f"{sender_name} => {message_context}" + colorama.Fore.RESET)
+        print(msg_color + f"{sender_name} => {message_context}" + colorama.Fore.RESET)
     else:  # Сообщение отправил этот пользователь
         print(colorama.Fore.WHITE + f"Вы => {message_context}" + colorama.Fore.RESET)
     # TODO: Добавить @ping пользователя
